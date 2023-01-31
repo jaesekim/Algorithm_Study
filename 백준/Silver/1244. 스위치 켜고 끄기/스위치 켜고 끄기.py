@@ -34,4 +34,3 @@ for ans_idx in range(1, count+1):
     print(switch_list[ans_idx - 1], end=' ')
     if ans_idx % 20 == 0:
         print("")
-print("")
