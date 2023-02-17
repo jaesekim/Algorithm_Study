@@ -6,7 +6,4 @@ for no in range(1, 11):
             stack.append(chars[i])
         else:
             stack.pop()
-    answer = ''
-    for char in stack:
-        answer += char
-    print(f"#{no} {answer}")
+    print(f"#{no} {''.join(stack)}")
