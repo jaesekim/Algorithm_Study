@@ -33,7 +33,6 @@ for floor in range(6):  # 첫번째 주사위 바닥에 위치할 숫자의 번�
     mx_value += max(side_max)
     for num in range(1, N):  # num: 입력받은 주사위의 두번째 주사위부터 N번째 주사위를 찾기위한 변수
         floor_idx = dices[num].index(dices[num-1][top])
-        # print(dices[num][dices[num].index(dices[num-1][top])])
         top = idx_dict[floor_idx]
         side_max = [dices[num][i] for i in side_nbr((floor_idx, top))]
         mx_value += max(side_max)
