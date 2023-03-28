@@ -1,51 +1,43 @@
-def recursive(i, cnt):  # i: 바꿀 시작 index, cnt: 현재까지 바꾼 횟수, ex: 바꿀 수 있는 최대 횟수
-    global answer
-    if cnt == exchange:
-        tmp = int("".join(list(map(str, num))))
-        if answer <= tmp:
-            answer = tmp
-            return
-    # 인덱스 맨 끝까지 왔는 데 cnt 아직 exchange 만큼 다 안 갔을 때
-    # 이미 정렬은 끝난 것
+# 최대 상금
+def recursive(i, cnt):  
+    # i: 비교하려는 인덱스. 맨 처음 인덱스부터 시작한다. 
+    # -> 최대값 맨 앞부터 채우기 위함
+    if cnt == swap:  # 스왑 횟수 모두 채웠다면
+        answer.append(int("".join(list(map(str, num)))))
+        return
+    
+    # cnt가 swap 만큼 다 돌기전에 마지막 인덱스에 도달했다면 
+    # -> 이미 정렬은 끝난 것
     if i == length - 1:
-        if flag:  # 중복되는 값이 있다면
-            tmp = int("".join(list(map(str, num))))
-            if answer <= tmp:
-                answer = tmp
-                return
-        elif (exchange - cnt) % 2:
-            num[-2], num[-1] = num[-1], num[-2]
-            tmp = int("".join(list(map(str, num))))
-            if answer <= tmp:
-                answer = tmp
-                return
-        elif not (exchange - cnt) % 2:
-            tmp = int("".join(list(map(str, num))))
-            if answer <= tmp:
-                answer = tmp
-                return
-    mx_num = max(num[i:])
-    if num[i] == mx_num:  # 지금 참조하는 인덱스가 최대값이면 다음 재귀로 넘어간다
+        if (swap - cnt) % 2 and not flag:
+            num[-2], num[-1] = num[-1], num[-2]  # 맨 마지막 두 개 스왑
+        answer.append(int("".join(list(map(str, num)))))
+        return
+    local_mx = max(num[i:])
+    # 최대값이 현재 비교할 인덱스에 있는 값과 동일하다면 그리디 관점에서
+    # 이미 최대값을 이루고 있다는 의미이므로 그 다음 인덱스로 넘어가기
+    if num[i] == local_mx:
         recursive(i+1, cnt)
-    else:  # 지금 참조하는 인덱스 값이 최대가 아니라면
+    else:  # i번째 인덱스 값이 local_mx가 아니라면
+        # i보다 큰 인덱스 중에 local_mx가 어디에 있는지 찾는 것이다
         for j in range(i+1, length):
-            if num[j] == mx_num:
+            if num[j] == local_mx:
                 num[i], num[j] = num[j], num[i]
-                recursive(i+1, cnt+1)
+                recursive(i+1, cnt+1)  # 다음 비교 인덱스, 스왑했으니까 +1
                 num[i], num[j] = num[j], num[i]
-
 
 T = int(input())
 for tc in range(1, T+1):
-    num, exchange = map(int, input().split())
-    num = list(map(int, list(str(num))))
+    num, swap = input().split()  # swap: 반복해야하는 횟수
+    swap = int(swap)
+    num = list(map(int, list(num)))
     length = len(num)
-    answer = 0
-    flag = 0  # 중복된 숫자 있는지 판별하는 변수
-    num_nums = [0] * 10
-    for i in num:
-        num_nums[i] += 1
-    if max(num_nums) >= 2:
+    answer = []
+    flag = 0  # 중복된 숫자가 있는지 확인하기 위한 변수. 0: 없음, 1: 있음
+    num_cnt = [0] * 10
+    for k in num:
+        num_cnt[k] += 1
+    if max(num_cnt) >= 2:
         flag = 1
     recursive(0, 0)
-    print(f"#{tc} {answer}")
+    print(f"#{tc} {max(answer)}")
