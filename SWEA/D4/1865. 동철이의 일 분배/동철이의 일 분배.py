@@ -14,6 +14,7 @@ def backtracking(row, mul, n):
             check_col[col] = 1
             backtracking(row+1, tmp, n)
             check_col[col] = 0
+    return
 
 
 T = int(input())
