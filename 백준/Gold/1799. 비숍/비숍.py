@@ -15,6 +15,7 @@ def bishop(row, cnt, chess):
                 right[N - 1 - row + col] = 0
                 left[row + col] = 0
         bishop(row + 1, cnt, chess)
+        return
 
 
 def sep_chess(board, color):
