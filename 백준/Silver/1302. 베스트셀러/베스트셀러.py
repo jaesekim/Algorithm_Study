@@ -1,9 +1,18 @@
-N = int(input())
+import sys
+input = sys.stdin.readline
+
 books = {}
-for _ in range(N):
-    title = input()
-    if title in books:
-        books[title] += 1
-    else:  # key 값 없으면 넣어주고 1로 초기화
-        books[title] = 1
-print(sorted(books, key=lambda x: (-books[x], x))[0])  # 내림차순 정렬, 사전 순 정렬
+result_count = 0
+result_title = ""
+for _ in range(int(input())):
+    title = "".join(input().split("\n"))
+    books[title] = books.get(title, 0) + 1
+
+for key, value in books.items():
+    if value > result_count:
+        result_count = value
+        result_title = key
+    elif value == result_count:
+        tmp = sorted([result_title, key])
+        result_title = tmp[0]
+print(result_title)
