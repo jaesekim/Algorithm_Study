@@ -1,24 +1,25 @@
-from collections import deque
+import sys
+input = sys.stdin.readline
 
-nums = int(input())
-network = {}
-for i in range(1, nums+1):
-    network[i] = []
-edges = int(input())
-answer = 0
-visited = [0] * (nums + 1)
-for _ in range(edges):
+N = int(input())
+network = [[0] * (N+1) for _ in range(N+1)]
+visited = [0] * (N + 1)
+cnt = 0
+stack = []
+
+for _ in range(int(input())):
     n1, n2 = map(int, input().split())
-    network[n1].append(n2)
-    network[n2].append(n1)
-queue = deque()
-queue.append(1)
+    network[n1][n2] = 1
+    network[n2][n1] = 1
+stack.append(1)
 visited[1] = 1
-while queue:
-    cur = queue.popleft()
-    for w in network[cur]:
-        if not visited[w]:
-            visited[w] = 1
-            answer += 1
-            queue.append(w)
-print(answer)
+
+while stack:
+    cur = stack.pop()
+    for node in range(1, N+1):
+        connected = network[cur][node]
+        if not visited[node] and connected:
+            cnt += 1
+            visited[node] = 1
+            stack.append(node)
+print(cnt)
